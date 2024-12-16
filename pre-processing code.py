@@ -4,11 +4,19 @@ import numpy as np
 from mne.preprocessing import ICA
 
 # Loop over subjects 11 to 50
-for subject_id in range(30, 50):
+#for subject_id in range(30, 50):
+for subject_id in range(14, 50): 
+#if i != 13
     # Create file paths for raw and preprocessed data
-    file_path = f'/Users/tanisha/Desktop/TEST EEG/21679035/edffile/sub-{subject_id}/eeg/sub-{subject_id}_task-motor-imagery_eeg.edf'
-    output_file = f'/Users/tanisha/Desktop/eeg/preprocessed_eeg_raw_{subject_id}.fif'
-    
+    #file_path = f'/Users/tanisha/Desktop/TEST EEG/21679035/edffile/sub-{subject_id}/eeg/sub-{subject_id}_task-motor-imagery_eeg.edf'
+    #output_file = f'/Users/tanisha/Desktop/eeg/preprocessed_eeg_raw_{subject_id}.fif'
+    s=str(subject_id).rjust(2, '0')
+    #file_path = f'/Users/tcs/Titir Code/EEG Motor/edffile/sub-{subject_id}/eeg/sub-{subject_id}_task-motor-imagery_eeg.edf'
+    #output_file = f'/Users/tcs/Titir Code/EEG Motor/newEEG/preprocessed_eeg_raw_{subject_id}.fif'
+    # file_path = f'/Users/tcs/Titir Code/EEG Motor/edffile/sub-{s}/eeg/sub-{s}_task-motor-imagery_eeg.edf'
+    # output_file = f'/Users/tcs/Titir Code/EEG Motor/newEEG/preprocessed_eeg_raw_{s}.fif'
+    file_path = f'/Users/tanisha/Desktop/TEST EEG/21679035/edffile/sub-{s}/eeg/sub-{s}_task-motor-imagery_eeg.edf'
+    output_file = f'/Users/tanisha/Desktop/eeg2/preprocessed_eeg_raw_{s}.fif'
     # Step 1: Load the raw EEG data
     raw = mne.io.read_raw_edf(file_path, preload=True)
 
@@ -24,11 +32,12 @@ for subject_id in range(30, 50):
     raw.plot(title=f"After Setting Average Reference - Subject {subject_id}")
 
     # Step 3: High-pass filter (to remove slow drifts)
-    raw.filter(l_freq=1.0, h_freq=None)  # High-pass filter at 1 Hz
+    raw.filter(l_freq=65.0, h_freq=35.0)
+    raw.filter(l_freq=4.0, h_freq=None)  # High-pass filter at 1 Hz
     raw.plot(title=f"After High-pass Filtering - Subject {subject_id}")
 
     # Step 4: Low-pass filter (to remove high-frequency noise)
-    raw.filter(l_freq=None, h_freq=50.0)  # Low-pass filter at 50 Hz
+    raw.filter(l_freq=None, h_freq=30.0)  # Low-pass filter at 40 Hz
     raw.plot(title=f"After Low-pass Filtering - Subject {subject_id}")
 
     # Step 5: Detect and mark bad channels
@@ -72,3 +81,4 @@ for subject_id in range(30, 50):
 
     # Step 10: Plot the preprocessed data
     raw_cleaned.plot(title=f"Preprocessed EEG Data - Subject {subject_id}")
+
