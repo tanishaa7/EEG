@@ -17,22 +17,29 @@ def bandpass_filter(data, low, high, sfreq, order=4):
     return lfilter(b, a, data, axis=-1)
 
 # Define the base path where the files are located
-base_path = '/Users/tanisha/Desktop/eeg/'
-
+base_path = '/Users/tanisha/Desktop/eeg2/'
+#base_path = '/Users/tcs/Titir Code/EEG Motor/eeg/'
+# base_path = '/Users/tcs/Titir Code/EEG Motor/newEEG/'
+file_paths =[None]*49
 # Generate the file paths dynamically
-file_paths = [f'{base_path}preprocessed_eeg_raw_{i}.fif' for i in range(1, 40) if i != 13]
+for i in range(1, 50):
+    s=str(i).rjust(2, '0')
+    file_paths[i-1] = f'{base_path}preprocessed_eeg_raw_{s}.fif'
+#file_paths = [f'{base_path}preprocessed_eeg_raw_{i}.fif' for i in range(14, 49)]
 
 # Initialize lists to hold data and labels
 all_X = []
 all_y = []
-
+i=0
 # Process each file using a for loop
 for file_path in file_paths:
     # Load the EEG data
     raw = mne.io.read_raw_fif(file_path, preload=True)
 
     # Extract relevant channels: 1:17 and 19:30 (0-based index)
-    selected_channels = list(range(0, 17)) + list(range(18, 30))
+    #selected_channels = list(range(0, 17)) + list(range(18, 30))
+    #AP
+    selected_channels = list(range(1, 17)) + list(range(19, 30))
     raw.pick_channels([raw.ch_names[i] for i in selected_channels])
 
     # Step 1: Detect or create events
