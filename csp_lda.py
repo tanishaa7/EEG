@@ -8,11 +8,25 @@ from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDis
 from mne.decoding import CSP
 import os
 
-# Define the base path where the files are located
-base_path = '/Users/tanisha/Desktop/eeg/'
+# # Define the base path where the files are located
+base_path = '/Users/tanisha/Desktop/eeg2/'
+# base_path = '/Users/tcs/Titir Code/EEG Motor/newEEG/'
+file_paths =[None]*49
+# # Generate the file paths dynamically
+for i in range(1, 50):
+    s=str(i).rjust(2, '0')
+    file_paths[i-1] = f'{base_path}preprocessed_eeg_raw_{s}.fif'
+#file_paths = [f'{base_path}preprocessed_eeg_raw_{i}.fif' for i in range(1, 40) if i!=13]
+#file_paths = [f'{base_path}preprocessed_eeg_raw_{i}.fif' for i in range(14, 49)]
+
+# Define the base path where the files are located in Google Drive
+#base_path = '/content/drive/My Drive/eeg/'
 
 # Generate the file paths dynamically
-file_paths = [f'{base_path}preprocessed_eeg_raw_{i}.fif' for i in range(1, 40) if i!=13]
+#file_paths = [os.path.join(base_path, f'preprocessed_eeg_raw_{i}.fif') for i in range(1, 40) if i != 13]
+
+# Print file paths to verify
+#print(file_paths)
 
 # Initialize lists to hold data and labels
 all_X = []
@@ -24,7 +38,8 @@ for file_path in file_paths:
     raw = mne.io.read_raw_fif(file_path, preload=True)
 
     # Extract relevant channels: 1:17 and 19:30 (0-based index)
-    selected_channels = list(range(0, 17)) + list(range(18, 30))
+    #selected_channels = list(range(0, 17)) + list(range(18, 30))
+    selected_channels = list(range(1, 17)) + list(range(19, 30))
     raw.pick_channels([raw.ch_names[i] for i in selected_channels])
 
     # Step 1: Detect or create events
